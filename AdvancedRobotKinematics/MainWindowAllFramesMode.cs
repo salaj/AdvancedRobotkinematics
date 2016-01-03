@@ -53,7 +53,7 @@ namespace AdvancedRobotKinematics
             {
                 var timeFactor = i / (FramesCount - 1.0);
                 linearInterpolator.CalculateCurrentPosition(ref currentPosition, timeFactor);
-                linearInterpolator.CalculateCurrentAngle(ref currentAngleR, ref currentAngleP, ref currentAngleY, timeFactor);
+                linearInterpolator.CalculateCurrentAngle(ref currentRotation, timeFactor);
 
                 if (lerpActivated)
                     linearInterpolator.CalculateCurrentQuaternion(ref currentQuaternion, timeFactor);

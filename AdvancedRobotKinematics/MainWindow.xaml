@@ -82,11 +82,11 @@
                                         </Grid.RowDefinitions>
                                         <Label Grid.Column ="0" Grid.Row ="0"  Content="Roll" ></Label>
                                         <TextBox  Grid.Column ="1" Grid.Row ="0"  Name="StartAngleRBox" Text="{Binding Path=StartAngleR}" Width="50" Margin="10,0,0,0" HorizontalAlignment="Left"></TextBox>
-                                        <Label Grid.Column ="0" Grid.Row ="1" Content="Yaw" ></Label>
-                                        <TextBox Grid.Column ="1" Grid.Row ="1" Name="StartAnglePBox" Text="{Binding Path=StartAngleY}" Width="50" Margin="10,0,0,0" HorizontalAlignment="Left"></TextBox>
-                                        <Label Grid.Column ="0" Grid.Row ="2" Content="Pitch" ></Label>
-                                        <TextBox Grid.Column ="1" Grid.Row ="2" Name="StartAngleYBox" Text="{Binding Path=StartAngleP}" Width="50" Margin="10,0,0,0" HorizontalAlignment="Left"></TextBox>
-                                   </Grid>
+                                        <Label Grid.Column ="0" Grid.Row ="2" Content="Yaw" ></Label>
+                                        <TextBox Grid.Column ="1" Grid.Row ="2" Name="StartAngleYBox" Text="{Binding Path=StartAngleY}" Width="50" Margin="10,0,0,0" HorizontalAlignment="Left"></TextBox>
+                                        <Label Grid.Column ="0" Grid.Row ="1" Content="Pitch" ></Label>
+                                        <TextBox Grid.Column ="1" Grid.Row ="1" Name="StartAnglePBox" Text="{Binding Path=StartAngleP}" Width="50" Margin="10,0,0,0" HorizontalAlignment="Left"></TextBox>
+                                    </Grid>
                                 </StackPanel>
 
                                 <StackPanel>
@@ -154,10 +154,10 @@
                                         </Grid.RowDefinitions>
                                         <Label Grid.Column ="0" Grid.Row ="0"  Content="Roll" ></Label>
                                         <TextBox  Grid.Column ="1" Grid.Row ="0"  Name="EndAngleRBox" Text="{Binding Path=EndAngleR}" Width="50" Margin="10,0,0,0" HorizontalAlignment="Left"></TextBox>
-                                        <Label Grid.Column ="0" Grid.Row ="1" Content="Yaw" ></Label>
-                                        <TextBox Grid.Column ="1" Grid.Row ="1" Name="EndAnglePBox" Text="{Binding Path=EndAngleY}" Width="50" Margin="10,0,0,0" HorizontalAlignment="Left"></TextBox>
-                                        <Label Grid.Column ="0" Grid.Row ="2" Content="Pitch" ></Label>
-                                        <TextBox Grid.Column ="1" Grid.Row ="2" Name="EndAngleYBox" Text="{Binding Path=EndAngleP}" Width="50" Margin="10,0,0,0" HorizontalAlignment="Left"></TextBox>
+                                        <Label Grid.Column ="0" Grid.Row ="2" Content="Yaw" ></Label>
+                                        <TextBox Grid.Column ="1" Grid.Row ="2" Name="EndAngleYBox" Text="{Binding Path=EndAngleY}" Width="50" Margin="10,0,0,0" HorizontalAlignment="Left"></TextBox>
+                                        <Label Grid.Column ="0" Grid.Row ="1" Content="Pitch" ></Label>
+                                        <TextBox Grid.Column ="1" Grid.Row ="1" Name="EndAnglePBox" Text="{Binding Path=EndAngleP}" Width="50" Margin="10,0,0,0" HorizontalAlignment="Left"></TextBox>
                                     </Grid>
                                 </StackPanel>
 
@@ -200,12 +200,12 @@
                 <ColumnDefinition Width="1*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <h:HelixViewport3D Grid.Column ="0" Name="HelixViewportLeft" BorderBrush="Black" BorderThickness="2" Camera="{h:PerspectiveCamera 5,-20,7.5}">
-                    <h:DefaultLights/>
-                    <h:CubeVisual3D x:Name="FrameStartEuler" Visible="False"/>
-                    <h:CombinedManipulator x:Name="FrameStartEulerManipulator" TargetTransform="{Binding Transform, ElementName=FrameStartEuler}"/>
-                    <h:CubeVisual3D x:Name="FrameEndEuler" Visible="False"/>
-                    <h:CombinedManipulator x:Name="FrameEndEulerManipulator" TargetTransform="{Binding Transform, ElementName=FrameEndEuler}"/>
-                </h:HelixViewport3D>
+                <h:DefaultLights/>
+                <h:CubeVisual3D x:Name="FrameStartEuler" Visible="False"/>
+                <h:CombinedManipulator x:Name="FrameStartEulerManipulator" TargetTransform="{Binding Transform, ElementName=FrameStartEuler}"/>
+                <h:CubeVisual3D x:Name="FrameEndEuler" Visible="False"/>
+                <h:CombinedManipulator x:Name="FrameEndEulerManipulator" TargetTransform="{Binding Transform, ElementName=FrameEndEuler}"/>
+            </h:HelixViewport3D>
             <h:HelixViewport3D Grid.Column ="1" Name="HelixViewportRight" BorderBrush="Black" BorderThickness="2" Camera="{h:PerspectiveCamera 5,-20,7.5}">
                 <h:DefaultLights/>
                 <h:CubeVisual3D x:Name="FrameStartQuaternion" Visible="False"/>

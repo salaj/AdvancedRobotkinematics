@@ -64,6 +64,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="robot\Component.cs" />
+    <Compile Include="robot\Joint.cs" />
+    <Compile Include="robot\Frame.cs" />
+    <Compile Include="robot\Robot.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -72,6 +76,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="bases\Containers.cs" />
+    <Compile Include="bases\Singletone.cs" />
     <Compile Include="interpolators\LinearInterpolator.cs" />
     <Compile Include="interpolators\SphericalLinearInterpolator.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -85,6 +91,7 @@
     <Compile Include="MainWindowSceneHandler.cs" />
     <Compile Include="maths\EulerToQuaternionConverter.cs" />
     <Compile Include="maths\IConverter.cs" />
+    <Compile Include="maths\MathHelper.cs" />
     <Compile Include="maths\TransformMatrixBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

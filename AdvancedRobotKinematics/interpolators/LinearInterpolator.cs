@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Media3D;
+using AdvancedRobotKinematics.bases;
+using MotionInterpolation.bases;
 
 namespace AdvancedRobotKinematics.interpolators
 {
@@ -58,14 +60,14 @@ namespace AdvancedRobotKinematics.interpolators
             this.endQuaternion = endQuaternion;
         }
 
-        public void CalculateCurrentAngle(ref double currentAngleR, ref double currentAngleP, ref double currentAngleY, double normalizedTime)
+        public void CalculateCurrentAngle(ref Rotation currentRotation, double normalizedTime)
         {
-            currentAngleR = StartAngleR + normalizedTime * (EndAngleR - StartAngleR);
-            currentAngleP = StartAngleP + normalizedTime * (EndAngleP - StartAngleP);
-            currentAngleY = StartAngleY + normalizedTime * (EndAngleY - StartAngleY);
+            currentRotation.R = StartAngleR + normalizedTime * (EndAngleR - StartAngleR);
+            currentRotation.P = StartAngleP + normalizedTime * (EndAngleP - StartAngleP);
+            currentRotation.Y = StartAngleY + normalizedTime * (EndAngleY - StartAngleY);
         }
 
-        public void CalculateCurrentPosition(ref Vector3D currentPosition, double normalizedTime)
+        public void CalculateCurrentPosition(ref Position currentPosition, double normalizedTime)
         {
             currentPosition.X = StartPositionX + normalizedTime * (EndPositionX - StartPositionX);
             currentPosition.Y = StartPositionY + normalizedTime * (EndPositionY - StartPositionY);

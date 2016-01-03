@@ -1,9 +1,11 @@
 ﻿using System.Windows.Shapes;
+using AdvancedRobotKinematics.bases;
 using AdvancedRobotKinematics.interpolators;
 using HelixToolkit.Wpf;
 using System;
 using System.Windows;
 using System.Windows.Media.Media3D;
+using MotionInterpolation.bases;
 
 namespace AdvancedRobotKinematics
 {
@@ -227,10 +229,8 @@ namespace AdvancedRobotKinematics
                 //HelixViewportLeft.Children.Remove(FrameEndEulerManipulator);
                 //HelixViewportRight.Children.Remove(FrameStartQuaternionManipulator);
                 //HelixViewportRight.Children.Remove(FrameEndQuaternionManipulator);
-                currentPosition = new Vector3D(StartPositionX, StartPositionY, StartPositionZ);
-                currentAngleR = startAngleR;
-                currentAngleP = startAngleP;
-                currentAngleY = startAngleY;
+                currentPosition = new Position(StartPositionX, StartPositionY, StartPositionZ);
+                currentRotation = new Rotation(startAngleR, startAngleP, startAngleY);
                 currentQuaternion = startQuaternion;
 
                 SetupCurrentConfiguration();
@@ -276,15 +276,19 @@ namespace AdvancedRobotKinematics
 
         private void RefreshEulerToQuaternion(object sender, RoutedEventArgs e)
         {
-            SetupStartConfiguration(ConversionType.EulerToQuaternion);
-            SetupEndConfiguration(ConversionType.EulerToQuaternion);
+            //SetupStartConfiguration(ConversionType.EulerToQuaternion);
+            //SetupEndConfiguration(ConversionType.EulerToQuaternion);
+            SetupStartConfiguration();
+            SetupEndConfiguration();
         }
 
 
         private void RefreshQuaternionToEuler(object sender, RoutedEventArgs e)
         {
-            SetupStartConfiguration(ConversionType.QuaternionToEuler);
-            SetupEndConfiguration(ConversionType.QuaternionToEuler);
+            //SetupStartConfiguration(ConversionType.QuaternionToEuler);
+            //SetupEndConfiguration(ConversionType.QuaternionToEuler);
+            SetupStartConfiguration();
+            SetupEndConfiguration();
         }
 
         private void EndApplyChangesButton_Click(object sender, RoutedEventArgs e)

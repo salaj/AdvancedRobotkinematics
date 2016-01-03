@@ -4,11 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
+using MotionInterpolation.bases;
+using MotionInterpolation.maths;
 
 namespace AdvancedRobotKinematics.maths
 {
     public class EulerToQuaternionConverter
     {
+        private double R, P, Y;
+
+        //public EulerToQuaternionConverter(double R, double P, double Y)
+        //{
+        //    this.R = R;
+        //    this.P = P;
+        //    this.Y = Y;
+        //}
+
+        public void Convert(double R, double P, double Y, ref Quaternion startQuaternion)
+        {
+            //convert from euler angles to radians
+            Singleton<MathHelper>.Instance.EulerToRadian(ref R);
+            Singleton<MathHelper>.Instance.EulerToRadian(ref P);
+            Singleton<MathHelper>.Instance.EulerToRadian(ref Y);
+            startQuaternion = ChangeAngles(P, Y, R);
+        }
+
         /// <summary>
         /// We Assume that angles are in radians
         /// </summary>
@@ -16,7 +36,7 @@ namespace AdvancedRobotKinematics.maths
         /// <param name="attitude"></param>
         /// <param name="bank"></param>
         /// <returns></returns>
-        public Quaternion Convert(double heading, double attitude, double bank)
+        private Quaternion ChangeAngles(double heading, double attitude, double bank)
         {
             double c1 = Math.Cos(heading / 2);
             double s1 = Math.Sin(heading / 2);

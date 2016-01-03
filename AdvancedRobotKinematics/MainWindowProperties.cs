@@ -378,6 +378,11 @@ namespace AdvancedRobotKinematics
             EndPositionY = 0;
             EndPositionZ = 0;
 
+            xDirection = new Vector3D(1, 0, 0);
+            yDirection = new Vector3D(0, 1, 0);
+            zDirection = new Vector3D(0, 0, 1);
+
+
             buttonsFlags = new bool[3]{ false, false, false };
         }
     }
