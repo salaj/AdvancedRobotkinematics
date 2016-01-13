@@ -6,6 +6,7 @@ using System;
 using System.Windows;
 using System.Windows.Media.Media3D;
 using MotionInterpolation.bases;
+using MotionInterpolation.interpolators;
 
 namespace AdvancedRobotKinematics
 {
@@ -21,6 +22,8 @@ namespace AdvancedRobotKinematics
         {
             linearInterpolator = new LinearInterpolator();
             sphericalLinearInterpolator = new SphericalLinearInterpolator();
+            realTimeInterpolator = new RealTimeInterpolator();
+
             const double maxVal = 8;
 
             var arrowX = new ArrowVisual3D();
@@ -162,14 +165,14 @@ namespace AdvancedRobotKinematics
             HelixViewportRight.Children.Add(zArrowText);
 
             var leftText = new TextVisual3D();
-            leftText.Text = "Euler Angles Interpolation";
+            leftText.Text = "Internal angles interpolation";
             leftText.Position = new Point3D(0, 0, maxVal + 0.5);
             leftText.Height = 1;
             leftText.FontWeight = System.Windows.FontWeights.Bold;
             HelixViewportLeft.Children.Add(leftText);
 
             var rightText = new TextVisual3D();
-            rightText.Text = "Quaternion Interpolation";
+            rightText.Text = "Inverse chain";
             rightText.Position = new Point3D(0, 0, maxVal + 0.5);
             rightText.Height = 1;
             rightText.FontWeight = System.Windows.FontWeights.Bold;

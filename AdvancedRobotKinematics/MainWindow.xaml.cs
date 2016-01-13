@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
 using MotionInterpolation.bases;
+using MotionInterpolation.interpolators;
 
 namespace AdvancedRobotKinematics
 {
@@ -41,8 +42,10 @@ namespace AdvancedRobotKinematics
         private bool[] buttonsFlags;
         private LinearInterpolator linearInterpolator;
         private SphericalLinearInterpolator sphericalLinearInterpolator;
+        private RealTimeInterpolator realTimeInterpolator;
 
-        private Robot robot;
+        private Robot robotLeft;
+        private Robot robotRight;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -57,15 +60,16 @@ namespace AdvancedRobotKinematics
             InitializeComponent();
             DataContext = this;
             InitializeVariables();
+            InitializeRobot();
             InitializeScene();
             InitializeTimer();
             InitializeScene();
-            InitializeRobot();
         }
 
         void InitializeRobot()
         {
-            robot = new Robot(HelixViewportLeft);
+            robotLeft = new Robot(HelixViewportLeft, FrameStartEuler, FrameEndEuler);
+            robotRight = new Robot(HelixViewportRight, FrameStartQuaternion, FrameEndQuaternion);
             //robot.Update();
         }
 
@@ -80,14 +84,27 @@ namespace AdvancedRobotKinematics
         {
             var startPosition = new Position(StartPositionX, StartPositionY, StartPositionZ);
             var startRotation = new Rotation(startAngleR, startAngleP, startAngleY);
-            SetupConfiguration(FrameStartEuler, FrameStartQuaternion, startPosition, startRotation, ref startQuaternion);
+            //SetupConfiguration(FrameStartEuler, FrameStartQuaternion, startPosition, startRotation, ref startQuaternion);
+
+            robotLeft.SetupEffector(startPosition, startRotation);
+            robotLeft.calculateConfiguration(true);
+
+            robotRight.SetupEffector(startPosition, startRotation);
+            robotRight.calculateConfiguration(true);
         }
 
         private void SetupEndConfiguration()
         {
             var endPosition = new Position(EndPositionX, EndPositionY, EndPositionZ);
             var endRotation = new Rotation(endAngleR, endAngleP, endAngleY);
-            SetupConfiguration(FrameEndEuler, FrameEndQuaternion, endPosition, endRotation, ref endQuaternion);
+           // SetupConfiguration(FrameEndEuler, FrameEndQuaternion, endPosition, endRotation, ref endQuaternion);
+
+            robotLeft.SetupEffector(endPosition, endRotation);
+            robotLeft.calculateConfiguration(false);
+
+            robotRight.SetupEffector(endPosition, endRotation);
+            robotRight.calculateConfiguration(false);
+
         }
 
         private void SetupCurrentConfiguration()
@@ -104,12 +121,13 @@ namespace AdvancedRobotKinematics
             eulerTransformGroup.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(yDirection, rotation.P)));
             eulerTransformGroup.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(zDirection, rotation.Y)));
             eulerTransformGroup.Children.Add(new TranslateTransform3D(position.X, position.Y, position.Z));
-            euler.Transform = eulerTransformGroup;
+            //euler.Transform = eulerTransformGroup;
             Singleton<EulerToQuaternionConverter>.Instance.Convert(rotation.R, rotation.P, rotation.Y, ref Q);
 
             quaternionTransformGroup.Children.Add(new RotateTransform3D(new QuaternionRotation3D(Q)));
             quaternionTransformGroup.Children.Add(new TranslateTransform3D(position.X, position.Y, position.Z));
             quaternion.Transform = quaternionTransformGroup;
+
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
@@ -125,7 +143,7 @@ namespace AdvancedRobotKinematics
                 return;
             }
 
-            linearInterpolator.CalculateCurrentPosition(ref currentPosition,  normalizedTime);
+            linearInterpolator.CalculateCurrentPosition(ref currentPosition, normalizedTime);
             linearInterpolator.CalculateCurrentAngle(ref currentRotation, normalizedTime);
             if (lerpActivated)
                 linearInterpolator.CalculateCurrentQuaternion(ref currentQuaternion, normalizedTime);
@@ -134,6 +152,14 @@ namespace AdvancedRobotKinematics
                 sphericalLinearInterpolator.CalculateCurrentQuaternion(ref currentQuaternion, normalizedTime);
             }
             SetupCurrentConfiguration();
+
+
+            robotLeft.InterpolatePositionsLeft(realTimeInterpolator, normalizedTime);
+            
+
+            robotRight.SetupEffector(currentPosition, currentQuaternion);
+            robotRight.calculateConfiguration(true);
+
         }
 
     }

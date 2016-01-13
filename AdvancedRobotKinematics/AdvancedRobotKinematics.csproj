@@ -64,6 +64,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="interpolators\RealTimeInterpolator.cs" />
     <Compile Include="robot\Component.cs" />
     <Compile Include="robot\Joint.cs" />
     <Compile Include="robot\Frame.cs" />
