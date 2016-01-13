@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Media3D;
+using MotionInterpolation.bases;
 
 namespace MotionInterpolation.maths
 {
@@ -14,19 +16,16 @@ namespace MotionInterpolation.maths
            Angle = Math.PI * 2.0f / 360.0f * Angle;
         }
 
-        public Vector3D Normalize(Vector3D v)
+        public void RadianToEuler(ref double Angle)
         {
-            return v / Vector3DLen(v);
-        }
-
-        public double Vector3DLen(Vector3D v)
-        {
-            return Math.Sqrt(Vector3D.DotProduct(v, v));
+            Angle = 360.0f/(Math.PI*2.0f)*Angle;
         }
 
         public double Angle(Vector3D v, Vector3D w)
         {
-            return Math.Acos(Vector3D.DotProduct(v, w)/(Vector3DLen(v)*Vector3DLen(w)));
+            double denominator = (v.Length*w.Length);
+
+            return Math.Atan2(Vector3D.CrossProduct(v, w).Length, Vector3D.DotProduct(v, w));
         }
     }
 }

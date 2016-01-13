@@ -11,8 +11,8 @@ namespace AdvancedRobotKinematics
 
         private void OnAllFramesDisplayed(object sender, RoutedEventArgs e)
         {
-            HelixViewportLeft.Children.Remove(FrameStartEulerManipulator);
-            HelixViewportLeft.Children.Remove(FrameEndEulerManipulator);
+            //HelixViewportLeft.Children.Remove(FrameStartEulerManipulator);
+            //HelixViewportLeft.Children.Remove(FrameEndEulerManipulator);
             HelixViewportRight.Children.Remove(FrameStartQuaternionManipulator);
             HelixViewportRight.Children.Remove(FrameEndQuaternionManipulator);
 
@@ -91,8 +91,8 @@ namespace AdvancedRobotKinematics
             ResetButton.IsEnabled = true;
             FramesCountBox.IsEnabled = true;
 
-            HelixViewportLeft.Children.Add(FrameStartEulerManipulator);
-            HelixViewportLeft.Children.Add(FrameEndEulerManipulator);
+            //HelixViewportLeft.Children.Add(FrameStartEulerManipulator);
+            //HelixViewportLeft.Children.Add(FrameEndEulerManipulator);
             HelixViewportRight.Children.Add(FrameStartQuaternionManipulator);
             HelixViewportRight.Children.Add(FrameEndQuaternionManipulator);
 

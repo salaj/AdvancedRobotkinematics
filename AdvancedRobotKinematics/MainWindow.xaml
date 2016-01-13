@@ -202,9 +202,9 @@
             <h:HelixViewport3D Grid.Column ="0" Name="HelixViewportLeft" BorderBrush="Black" BorderThickness="2" Camera="{h:PerspectiveCamera 5,-20,7.5}">
                 <h:DefaultLights/>
                 <h:CubeVisual3D x:Name="FrameStartEuler" Visible="False"/>
-                <h:CombinedManipulator x:Name="FrameStartEulerManipulator" TargetTransform="{Binding Transform, ElementName=FrameStartEuler}"/>
+                <!--<h:CombinedManipulator x:Name="FrameStartEulerManipulator" TargetTransform="{Binding Transform, ElementName=FrameStartEuler}"/>-->
                 <h:CubeVisual3D x:Name="FrameEndEuler" Visible="False"/>
-                <h:CombinedManipulator x:Name="FrameEndEulerManipulator" TargetTransform="{Binding Transform, ElementName=FrameEndEuler}"/>
+                <!--<h:CombinedManipulator x:Name="FrameEndEulerManipulator" TargetTransform="{Binding Transform, ElementName=FrameEndEuler}"/>-->
             </h:HelixViewport3D>
             <h:HelixViewport3D Grid.Column ="1" Name="HelixViewportRight" BorderBrush="Black" BorderThickness="2" Camera="{h:PerspectiveCamera 5,-20,7.5}">
                 <h:DefaultLights/>

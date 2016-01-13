@@ -32,7 +32,6 @@ namespace AdvancedRobotKinematics.robot
             Tube.Path[1] = new Point3D(End.Frame.P.X, End.Frame.P.Y, End.Frame.P.Z);
         }
         public Joint Begin { get; set; }
-        public Joint Center { get; set; }
         public Joint End { get; set; }
         public double Length { get; set; }
     }

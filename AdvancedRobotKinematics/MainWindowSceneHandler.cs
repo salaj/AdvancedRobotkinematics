@@ -134,28 +134,28 @@ namespace AdvancedRobotKinematics
             HelixViewportRight.Children.Add(xArrowText);
 
             var yArrowText = new TextVisual3D();
-            yArrowText.Text = "Y";
+            yArrowText.Text = "Z";
             yArrowText.Position = new Point3D(0, 0.5, maxVal - 0.5);
             yArrowText.Height = 0.5;
             yArrowText.FontWeight = System.Windows.FontWeights.Bold;
             HelixViewportLeft.Children.Add(yArrowText);
 
             yArrowText = new TextVisual3D();
-            yArrowText.Text = "Y";
+            yArrowText.Text = "Z";
             yArrowText.Position = new Point3D(0, 0.5, maxVal - 0.5);
             yArrowText.Height = 0.5;
             yArrowText.FontWeight = System.Windows.FontWeights.Bold;
             HelixViewportRight.Children.Add(yArrowText);
 
             var zArrowText = new TextVisual3D();
-            zArrowText.Text = "Z";
+            zArrowText.Text = "Y";
             zArrowText.Position = new Point3D(0.5, maxVal - 0.5, 0 );
             zArrowText.Height = 0.5;
             zArrowText.FontWeight = System.Windows.FontWeights.Bold;
             HelixViewportLeft.Children.Add(zArrowText);
 
             zArrowText = new TextVisual3D();
-            zArrowText.Text = "Z";
+            zArrowText.Text = "Y";
             zArrowText.Position = new Point3D(0.5, maxVal - 0.5, 0);
             zArrowText.Height = 0.5;
             zArrowText.FontWeight = System.Windows.FontWeights.Bold;
@@ -235,8 +235,8 @@ namespace AdvancedRobotKinematics
 
                 SetupCurrentConfiguration();
 
-                HelixViewportLeft.Children.Add(frameEuler);
-                HelixViewportRight.Children.Add(frameQuaternion);
+                //HelixViewportLeft.Children.Add(frameEuler);
+                //HelixViewportRight.Children.Add(frameQuaternion);
                 startTime = DateTime.Now;
                 dispatcherTimer.Start();
                 return;

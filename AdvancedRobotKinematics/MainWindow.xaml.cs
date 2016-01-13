@@ -66,7 +66,7 @@ namespace AdvancedRobotKinematics
         void InitializeRobot()
         {
             robot = new Robot(HelixViewportLeft);
-            robot.Update();
+            //robot.Update();
         }
 
         private void InitializeTimer()
