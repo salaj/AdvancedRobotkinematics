@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Shapes;
 using AdvancedRobotKinematics.bases;
 using AdvancedRobotKinematics.interpolators;
@@ -179,9 +180,28 @@ namespace AdvancedRobotKinematics
             rightText.FontWeight = System.Windows.FontWeights.Bold;
             HelixViewportRight.Children.Add(rightText);
 
-            
-            SetupStartConfiguration();
-            SetupEndConfiguration();
+
+            var floor = new RectangleVisual3D
+            {
+                Fill = new SolidColorBrush(Color.FromArgb(30, 0, 0, 0)),
+                Normal = new Vector3D(0, 0, 1),
+                Origin = new Point3D(0, 0, 0)
+            };
+            floor.Width = floor.Length = 10;
+            floor.LengthDirection = new Vector3D(1, 0, 0);
+
+            HelixViewportLeft.Children.Add(floor);
+
+            var wall = new RectangleVisual3D
+            {
+                Fill = new SolidColorBrush(Color.FromArgb(30, 0, 0, 0)),
+                Normal = new Vector3D(0, 0, 1),
+                Origin = new Point3D(0, 0, 0)
+            };
+            wall.Width = wall.Length = 10;
+            wall.LengthDirection = new Vector3D(1, 0, 0);
+            HelixViewportRight.Children.Add(wall);
+           
 
             frameEuler = new CombinedManipulator()
             {
@@ -338,6 +358,7 @@ namespace AdvancedRobotKinematics
             robotRight.components[4].Length = l4;
 
             SetupStartConfiguration();
+            SetupEndConfiguration();
         }
 
 

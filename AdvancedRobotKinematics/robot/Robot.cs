@@ -81,6 +81,11 @@ namespace AdvancedRobotKinematics.robot
             //components[3].Length = 2.0f;
             //components[4].Length = 1.0f;
 
+            joints[2].AddCyllinder(left);
+            joints[3].AddCyllinder(left);
+            joints[4].AddCyllinder(left);
+            joints[5].AddCyllinder(left);
+
             //Update();
         }
 
@@ -131,6 +136,7 @@ namespace AdvancedRobotKinematics.robot
                 components[i].Refresh();
             }
         }
+
 
         private void calculateAnglesGeometricMethod()
         {
@@ -351,12 +357,18 @@ namespace AdvancedRobotKinematics.robot
             pos = getPos(eulerTransformGroup);
             RotateInDirection(dir, pos, a2, ref eulerTransformGroup);
 
+            if (forInitialFrame)
+            joints[2].UpdateNormal(getY(eulerTransformGroup));
+
             dir = getX(eulerTransformGroup);
             TranslateInDirection(dir, q2, ref eulerTransformGroup);
 
             dir = getY(eulerTransformGroup);
             pos = getPos(eulerTransformGroup);
             RotateInDirection(dir, pos, a3, ref eulerTransformGroup);
+
+            if (forInitialFrame)
+            joints[3].UpdateNormal(getY(eulerTransformGroup));
 
             dir = getZ(eulerTransformGroup);
             TranslateInDirection(dir, -components[3].Length, ref eulerTransformGroup);
@@ -365,12 +377,18 @@ namespace AdvancedRobotKinematics.robot
             pos = getPos(eulerTransformGroup);
             RotateInDirection(dir, pos, a4, ref eulerTransformGroup);
 
+            if (forInitialFrame)
+            joints[4].UpdateNormal(getY(eulerTransformGroup));
+
             dir = getX(eulerTransformGroup);
             TranslateInDirection(dir, components[4].Length, ref eulerTransformGroup);
 
             dir = getX(eulerTransformGroup);
             pos = getPos(eulerTransformGroup);
             RotateInDirection(dir, pos, a5, ref eulerTransformGroup);
+
+            if (forInitialFrame)
+            joints[5].UpdateNormal(getY(eulerTransformGroup));
 
             //ORIGINAL
 
@@ -410,11 +428,12 @@ namespace AdvancedRobotKinematics.robot
         public void calculateConfiguration(bool forInitialFrame)
         {
             calculatePositions();
-            if (forInitialFrame)
-                UpdatePositionsVisual();
             //calculateAnglesGeometricMethod();
             calcaulateAnglesAlgebraicMethod();
             SetupConfiguration(forInitialFrame);
+
+            if (forInitialFrame)
+                UpdatePositionsVisual();
         }
 
         private void getInterpolatedPositions(Configuration interpolatedConfiguration)
@@ -440,6 +459,8 @@ namespace AdvancedRobotKinematics.robot
             pos = getPos(eulerTransformGroup);
             RotateInDirection(dir, pos, interpolatedConfiguration.A2, ref eulerTransformGroup);
 
+            joints[2].UpdateNormal(getY(eulerTransformGroup));
+
             dir = getX(eulerTransformGroup);
             TranslateInDirection(dir, interpolatedConfiguration.Q2, ref eulerTransformGroup);
 
@@ -448,6 +469,8 @@ namespace AdvancedRobotKinematics.robot
             dir = getY(eulerTransformGroup);
             pos = getPos(eulerTransformGroup);
             RotateInDirection(dir, pos, interpolatedConfiguration.A3, ref eulerTransformGroup);
+
+            joints[3].UpdateNormal(getY(eulerTransformGroup));
 
             dir = getZ(eulerTransformGroup);
             TranslateInDirection(dir, -components[3].Length, ref eulerTransformGroup);
@@ -458,6 +481,8 @@ namespace AdvancedRobotKinematics.robot
             pos = getPos(eulerTransformGroup);
             RotateInDirection(dir, pos, interpolatedConfiguration.A4, ref eulerTransformGroup);
 
+            joints[4].UpdateNormal(getY(eulerTransformGroup));
+
             dir = getX(eulerTransformGroup);
             TranslateInDirection(dir, components[4].Length, ref eulerTransformGroup);
 
@@ -466,6 +491,8 @@ namespace AdvancedRobotKinematics.robot
             dir = getX(eulerTransformGroup);
             pos = getPos(eulerTransformGroup);
             RotateInDirection(dir, pos, interpolatedConfiguration.A5, ref eulerTransformGroup);
+
+            joints[5].UpdateNormal(getY(eulerTransformGroup));
 
 
             joints[0].Frame.P = p0;

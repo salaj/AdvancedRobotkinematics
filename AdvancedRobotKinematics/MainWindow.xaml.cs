@@ -63,7 +63,6 @@ namespace AdvancedRobotKinematics
             DataContext = this;
             InitializeVariables();
             InitializeRobot();
-            //InitializeScene();
             InitializeTimer();
             InitializeScene();
         }
@@ -73,6 +72,10 @@ namespace AdvancedRobotKinematics
             robotLeft = new Robot(HelixViewportLeft, FrameStartEuler, FrameEndEuler);
             robotRight = new Robot(HelixViewportRight, FrameStartQuaternion, FrameEndQuaternion);
             UpdateRods();
+            //SetupStartConfiguration();
+            //SetupEndConfiguration();
+            //SetupStartConfiguration();
+            //SetupEndConfiguration();
         }
 
         private void InitializeTimer()
