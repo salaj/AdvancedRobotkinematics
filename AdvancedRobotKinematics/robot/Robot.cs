@@ -17,6 +17,11 @@ using MotionInterpolation.maths;
 
 namespace AdvancedRobotKinematics.robot
 {
+    public enum InterpolationType
+    {
+        Configuration,
+        InternalPositions
+    }
 
     public class Robot
     {
@@ -24,14 +29,12 @@ namespace AdvancedRobotKinematics.robot
         public Component[] components;
         public Joint[] joints;
 
+        public static InterpolationType InterpolationType = InterpolationType.Configuration;
+
         /// <summary>
         /// Configuration space parameters
         /// </summary>
         private double a1, a2, q2, a3, a4, a5;
-
-        private Vector3D xDirection;
-        private Vector3D yDirection;
-        private Vector3D zDirection;
 
         private ModelVisual3D startFrameEuler;
         private ModelVisual3D endFrameEuler;
@@ -44,9 +47,6 @@ namespace AdvancedRobotKinematics.robot
 
         public Robot(HelixViewport3D left, ModelVisual3D FrameStartEuler, ModelVisual3D FrameEndEuler)
         {
-            xDirection = new Vector3D(1, 0, 0);
-            yDirection = new Vector3D(0, 1, 0);
-            zDirection = new Vector3D(0, 0, 1);
 
             this.startFrameEuler = FrameStartEuler;
             this.endFrameEuler = FrameEndEuler;
@@ -71,15 +71,15 @@ namespace AdvancedRobotKinematics.robot
             {
                 components[i].Begin = joints[i];
                 components[i].End = joints[i + 1];
-                components[i].Length = 5.0f; 
+                components[i].Length = 5.0f;
                 left.Children.Add(components[i].Tube);
             }
 
             components[2].Tube.Fill = Brushes.Red;
-            components[0].Length = 0.0f;
-            components[1].Length = 5.0f;
-            components[3].Length = 2.0f;
-            components[4].Length = 1.0f;
+            //components[0].Length = 0.0f;
+            //components[1].Length = 5.0f;
+            //components[3].Length = 2.0f;
+            //components[4].Length = 1.0f;
 
             //Update();
         }
@@ -124,7 +124,7 @@ namespace AdvancedRobotKinematics.robot
             calculateP3();
         }
 
-        private void updatePositionsVisual()
+        public void UpdatePositionsVisual()
         {
             for (int i = 0; i < numberOfComponents; i++)
             {
@@ -148,7 +148,7 @@ namespace AdvancedRobotKinematics.robot
             a2 = Singleton<MathHelper>.Instance.Angle(joints[2].Frame.P.Value - joints[0].Frame.P.Value, joints[3].Frame.P.Value - joints[2].Frame.P.Value) - Math.PI / 2.0f;
             q2 = (joints[3].Frame.P.Value - joints[2].Frame.P.Value).Length;
             a3 = Singleton<MathHelper>.Instance.Angle(joints[3].Frame.P.Value - joints[2].Frame.P.Value, joints[4].Frame.P.Value - joints[3].Frame.P.Value) - Math.PI / 2.0f;
-            a4 = Singleton<MathHelper>.Instance.Angle(n, x5) + Math.PI/2.0f;
+            a4 = Singleton<MathHelper>.Instance.Angle(n, x5) + Math.PI / 2.0f;
             a5 = Singleton<MathHelper>.Instance.Angle(joints[3].Frame.P.Value - joints[4].Frame.P.Value, z5);
 
             convertAnglesToEuler();
@@ -162,14 +162,14 @@ namespace AdvancedRobotKinematics.robot
             right = joints[5].Frame.Y;
             up = joints[5].Frame.Z;
 
-            a1 = Math.Atan2(joints[5].Frame.P.Y - components[4].Length*forward.Y, joints[5].Frame.P.X - components[4].Length*forward.X);
+            a1 = Math.Atan2(joints[5].Frame.P.Y - components[4].Length * forward.Y, joints[5].Frame.P.X - components[4].Length * forward.X);
             double c1 = Math.Cos(a1);
             double s1 = Math.Sin(a1);
-            a4 =  Math.Asin(c1 * forward.Y - s1 * forward.X);
+            a4 = Math.Asin(c1 * forward.Y - s1 * forward.X);
             double c4 = Math.Cos(a4);
             double s4 = Math.Sin(a4);
             a5 = Math.Atan2((s1 * up.X - c1 * up.Y),
-                (c1 * right.Y - s1 * right.X) );
+                (c1 * right.Y - s1 * right.X));
             double c5 = Math.Cos(a5);
             double s5 = Math.Sin(a5);
             a2 =
@@ -181,10 +181,13 @@ namespace AdvancedRobotKinematics.robot
             double c2 = Math.Cos(a2);
             double s2 = Math.Sin(a2);
 
-            q2 = (c4*(joints[5].Frame.P.X - components[4].Length*forward.X) -
-                  c1*components[3].Length*forward.Z)/(c1*c2*c4);
+            q2 = (c4 * (joints[5].Frame.P.X - components[4].Length * forward.X) -
+                  c1 * components[3].Length * forward.Z) / (c1 * c2 * c4);
 
-            double a23 = Math.Atan2(-forward.Z/c4, (forward.X + s1*s4)/(c1*c4));
+            //q2 = (joints[5].Frame.P.X - components[4].Length * forward.X) / (c1 * c2) -
+            //      ( components[3].Length * forward.Z) / (c2 * c4);
+
+            double a23 = Math.Atan2(-forward.Z / c4, (forward.X + s1 * s4) / (c1 * c4));
             a3 = a23 - a2;
 
             convertAnglesToEuler();
@@ -202,18 +205,18 @@ namespace AdvancedRobotKinematics.robot
         private Vector3D calculateZ4Vector(Vector3D n, Vector3D x5)
         {
             var z4 = new Vector3D();
-            double a = n.Y - x5.Y/x5.X*n.X;
-            double b = n.Z - x5.Z/x5.X*n.X;
+            double a = n.Y - x5.Y / x5.X * n.X;
+            double b = n.Z - x5.Z / x5.X * n.X;
 
             if (a != 0)
             {
-                var first = ((b/a*x5.Y - x5.Z)/x5.X);
-                var second = b/a;
+                var first = ((b / a * x5.Y - x5.Z) / x5.X);
+                var second = b / a;
                 var third = 1;
-                var val = first*first + second*second + third*third;
-                z4.Z = Math.Sqrt(1/val);
-                z4.X = z4.Z*first;
-                z4.Y = -z4.Z*second;
+                var val = first * first + second * second + third * third;
+                z4.Z = Math.Sqrt(1 / val);
+                z4.X = z4.Z * first;
+                z4.Y = -z4.Z * second;
             }
             else if (b != 0)
             {
@@ -238,18 +241,33 @@ namespace AdvancedRobotKinematics.robot
             if (x5.X != 0)
             {
                 z4 = calculateZ4Vector(n, x5);
-            }else if (x5.Y != 0)
+            }
+            else if (x5.Y != 0)
             {
                 z4 = calculateZ4Vector(n, new Vector3D(x5.Y, x5.X, x5.Z));
-            }else if (x5.Z != 0)
+            }
+            else if (x5.Z != 0)
             {
                 z4 = calculateZ4Vector(n, new Vector3D(x5.Z, x5.X, x5.Y));
-                z4 = new Vector3D(z4.Y,z4.Z,z4.X);
+                z4 = new Vector3D(z4.Y, z4.Z, z4.X);
             }
             //p3 = p4 +- l3*z4
             //SECOND SOLUTION UNHANDLED YET
-            var p3 = joints[4].Frame.P.Value + components[3].Length * z4;
+            var prevP3 = joints[3].Frame.P.Value;
+            var p3First = joints[4].Frame.P.Value + components[3].Length * z4;
+            var p3Second = joints[4].Frame.P.Value - components[3].Length * z4;
+            Vector3D p3 = new Vector3D();
+            if ((p3First - prevP3).LengthSquared < (p3Second - prevP3).LengthSquared)
+            {
+                p3 = p3First;
+            }
+            else
+            {
+                p3 = p3Second;
+            }
             return p3;
+
+            //return joints[4].Frame.P.Value + components[3].Length * z4;
         }
 
         private void calculateP3()
@@ -264,98 +282,23 @@ namespace AdvancedRobotKinematics.robot
             Vector3D p3;
             if (checkIfTwoVectorsPararel(n, x5))
             {
-                p3 = handlePararel(x5);
+                //p3 = handlePararel(x5);
+                throw new ConfigurationFailureException();
             }
             else
             {
                 p3 = handleNotPararel(n, x5);
             }
-            joints[3].Frame.P=new Position(p3);
+            joints[3].Frame.P = new Position(p3);
         }
 
         private bool checkIfTwoVectorsPararel(Vector3D u, Vector3D v)
         {
-            double k1, k2, k3;
-            k1 = u.X/v.X;
-            k2 = u.Y/v.Y;
-            k3 = u.Z/v.Z;
-            if (k1 == k2 && k2 == k3)
+            Vector3D w = Vector3D.CrossProduct(u, v);
+
+            if (w == new Vector3D(0, 0, 0) || Double.IsNaN(w.X) || Double.IsNaN(w.Y) || Double.IsNaN(w.Z))
                 return true;
-            else
-                return false;
-        }
-
-        private Vector3D handlePararel(Vector3D x5)
-        {
-            Vector3D p3 = new Vector3D();
-            if (x5.X != 0)
-            {
-                p3 = probeZVector(x5);
-            }
-            else if (x5.Y != 0)
-            {
-                p3 = probeZVector(new Vector3D(x5.Y, x5.X, x5.Z));
-
-            }
-            else if (x5.Z != 0)
-            {
-                p3 = probeZVector(new Vector3D(x5.Z, x5.X, x5.Y));
-            }
-            else
-            {
-                int c = 10;
-            }
-            return p3;
-        }
-
-        private Vector3D probeZVector(Vector3D x5)
-        {
-            double a = x5.Y/x5.X;
-            double b = x5.Z/x5.X;
-            double z4X, z4Y, z4Z = 0;
-
-            int numberOfProbes = 100;
-            double left = -1;
-            double right = 1;
-            double len = right - left;
-
-
-            double minSquareLen = Double.MaxValue;
-            var minP3 = new Vector3D();
-
-            for (int i = 0; i < numberOfProbes; i++)
-            {
-                z4Z = left + (double)i/(double)(numberOfProbes - 1)*len;
-
-                double delta = 2*a*b*z4Z*2*a*b*z4Z - 4*(a*a + 1)*(z4Z*z4Z*b*b + z4Z*z4Z - 1);
-                z4Y = (-(2*a*b*z4Z) + Math.Sqrt(delta))/(2*(2*a*b*z4Z));
-                z4X = -(z4Y*x5.Y + z4Z*x5.Z)/x5.X;
-
-                Vector3D z4 = new Vector3D();
-                if (x5.X != 0)
-                {
-                    z4 = new Vector3D(z4X, z4Y, z4Z);   
-                }
-                else if (x5.Y != 0)
-                {
-                    z4 = new Vector3D(z4Y, z4X, z4Z);   
-                }
-                else if (x5.Z != 0)
-                {
-                    //OK
-                    z4 = new Vector3D(z4Y, z4Z, z4X);
-                }
-                //p3 = p4 +- l3*z4
-                var p3 = joints[4].Frame.P.Value + components[3].Length*z4;
-                var q2 = p3 - joints[2].Frame.P.Value;
-                var squareLen = Vector3D.DotProduct(q2, q2);
-                if (squareLen < minSquareLen)
-                {
-                    minSquareLen = squareLen;
-                    minP3 = p3;
-                }
-            }
-            return minP3;
+            return false;
         }
 
         private void TranslateInDirection(Vector3D dir, double val, ref Transform3DGroup eulerTransformGroup)
@@ -444,7 +387,7 @@ namespace AdvancedRobotKinematics.robot
 
             if (forInitialFrame)
             {
-                startConfiguration = new Configuration() {A1 = a1, A2 = a2, Q2 = q2, A3 = a3, A4 = a4, A5 = a5};
+                startConfiguration = new Configuration() { A1 = a1, A2 = a2, Q2 = q2, A3 = a3, A4 = a4, A5 = a5 };
                 startInternalPositions = new Vector3D[6]
                 {
                     joints[0].Frame.P.Value, joints[1].Frame.P.Value, joints[2].Frame.P.Value, joints[3].Frame.P.Value,
@@ -454,7 +397,7 @@ namespace AdvancedRobotKinematics.robot
             }
             else
             {
-                endConfiguration = new Configuration() {A1 = a1, A2 = a2, Q2 = q2, A3 = a3, A4 = a4, A5 = a5};
+                endConfiguration = new Configuration() { A1 = a1, A2 = a2, Q2 = q2, A3 = a3, A4 = a4, A5 = a5 };
                 endInternalPositions = new Vector3D[6]
                 {
                     joints[0].Frame.P.Value, joints[1].Frame.P.Value, joints[2].Frame.P.Value, joints[3].Frame.P.Value,
@@ -462,19 +405,13 @@ namespace AdvancedRobotKinematics.robot
                 };
                 endFrameEuler.Transform = eulerTransformGroup;
             }
-
-            //Singleton<EulerToQuaternionConverter>.Instance.Convert(rotation.R, rotation.P, rotation.Y, ref Q);
-
-            //quaternionTransformGroup.Children.Add(new RotateTransform3D(new QuaternionRotation3D(Q)));
-            //quaternionTransformGroup.Children.Add(new TranslateTransform3D(position.X, position.Y, position.Z));
-            //quaternion.Transform = quaternionTransformGroup;
         }
 
         public void calculateConfiguration(bool forInitialFrame)
         {
             calculatePositions();
             if (forInitialFrame)
-                updatePositionsVisual();
+                UpdatePositionsVisual();
             //calculateAnglesGeometricMethod();
             calcaulateAnglesAlgebraicMethod();
             SetupConfiguration(forInitialFrame);
@@ -483,10 +420,9 @@ namespace AdvancedRobotKinematics.robot
         private void getInterpolatedPositions(Configuration interpolatedConfiguration)
         {
             var eulerTransformGroup = new Transform3DGroup();
-            //var quaternionTransformGroup = new Transform3DGroup();
 
             Position p0, p1, p2, p3, p4, p5;
-            p0 = new Position(0,0,0);
+            p0 = new Position(0, 0, 0);
             p1 = new Position(p0);
 
             Vector3D dir, pos;
@@ -544,24 +480,35 @@ namespace AdvancedRobotKinematics.robot
 
         public void InterpolatePositionsLeft(RealTimeInterpolator realTimeInterpolator, double normalizedTime)
         {
-            Configuration interpolatedConfiguration = new Configuration();
-            interpolatedConfiguration.A1 = realTimeInterpolator.GetValue(normalizedTime, startConfiguration.A1, endConfiguration.A1);
-            interpolatedConfiguration.A2 = realTimeInterpolator.GetValue(normalizedTime, startConfiguration.A2, endConfiguration.A2);
-            interpolatedConfiguration.Q2 = realTimeInterpolator.GetValue(normalizedTime, startConfiguration.Q2, endConfiguration.Q2);
-            interpolatedConfiguration.A3 = realTimeInterpolator.GetValue(normalizedTime, startConfiguration.A3, endConfiguration.A3);
-            interpolatedConfiguration.A4 = realTimeInterpolator.GetValue(normalizedTime, startConfiguration.A4, endConfiguration.A4);
-            interpolatedConfiguration.A5 = realTimeInterpolator.GetValue(normalizedTime, startConfiguration.A5, endConfiguration.A5);
-
-            getInterpolatedPositions(interpolatedConfiguration);
-
-            //joints[0].Frame.P.Value = realTimeInterpolator.GetVectorValue(normalizedTime, startInternalPositions[0], endInternalPositions[0]);
-            //joints[1].Frame.P.Value = realTimeInterpolator.GetVectorValue(normalizedTime, startInternalPositions[1], endInternalPositions[1]);
-            //joints[2].Frame.P.Value = realTimeInterpolator.GetVectorValue(normalizedTime, startInternalPositions[2], endInternalPositions[2]);
-            //joints[3].Frame.P.Value = realTimeInterpolator.GetVectorValue(normalizedTime, startInternalPositions[3], endInternalPositions[3]);
-            //joints[4].Frame.P.Value = realTimeInterpolator.GetVectorValue(normalizedTime, startInternalPositions[4], endInternalPositions[4]);
-            //joints[5].Frame.P.Value = realTimeInterpolator.GetVectorValue(normalizedTime, startInternalPositions[5], endInternalPositions[5]);
-
-            updatePositionsVisual();
+            if (InterpolationType == InterpolationType.Configuration)
+            {
+                var interpolatedConfiguration = new Configuration
+                {
+                    A1 = realTimeInterpolator.GetValue(normalizedTime, startConfiguration.A1, endConfiguration.A1),
+                    A2 = realTimeInterpolator.GetValue(normalizedTime, startConfiguration.A2, endConfiguration.A2),
+                    Q2 = realTimeInterpolator.GetValue(normalizedTime, startConfiguration.Q2, endConfiguration.Q2),
+                    A3 = realTimeInterpolator.GetValue(normalizedTime, startConfiguration.A3, endConfiguration.A3),
+                    A4 = realTimeInterpolator.GetValue(normalizedTime, startConfiguration.A4, endConfiguration.A4),
+                    A5 = realTimeInterpolator.GetValue(normalizedTime, startConfiguration.A5, endConfiguration.A5)
+                };
+                getInterpolatedPositions(interpolatedConfiguration);
+            }
+            else if (InterpolationType == InterpolationType.InternalPositions)
+            {
+                joints[0].Frame.P.Value = realTimeInterpolator.GetVectorValue(normalizedTime, startInternalPositions[0],
+                    endInternalPositions[0]);
+                joints[1].Frame.P.Value = realTimeInterpolator.GetVectorValue(normalizedTime, startInternalPositions[1],
+                    endInternalPositions[1]);
+                joints[2].Frame.P.Value = realTimeInterpolator.GetVectorValue(normalizedTime, startInternalPositions[2],
+                    endInternalPositions[2]);
+                joints[3].Frame.P.Value = realTimeInterpolator.GetVectorValue(normalizedTime, startInternalPositions[3],
+                    endInternalPositions[3]);
+                joints[4].Frame.P.Value = realTimeInterpolator.GetVectorValue(normalizedTime, startInternalPositions[4],
+                    endInternalPositions[4]);
+                joints[5].Frame.P.Value = realTimeInterpolator.GetVectorValue(normalizedTime, startInternalPositions[5],
+                    endInternalPositions[5]);
+            }
+            UpdatePositionsVisual();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media.Media3D;
 
 namespace AdvancedRobotKinematics
@@ -58,6 +59,51 @@ namespace AdvancedRobotKinematics
                 {
                     framesCount = value;
                     OnPropertyChanged("FramesCount");
+                }
+            }
+        }
+
+        private double l1;
+        public double L1
+        {
+            get { return l1; }
+            set
+            {
+                if (value != l1)
+                {
+                    l1 = value;
+                    OnPropertyChanged("L1");
+                    UpdateRods();
+                }
+            }
+        }
+
+        private double l3;
+        public double L3
+        {
+            get { return l3; }
+            set
+            {
+                if (value != l3)
+                {
+                    l3 = value;
+                    OnPropertyChanged("L3");
+                    UpdateRods();
+                }
+            }
+        }
+
+        private double l4;
+        public double L4
+        {
+            get { return l4; }
+            set
+            {
+                if (value != l4)
+                {
+                    l4 = value;
+                    OnPropertyChanged("L4");
+                    UpdateRods();
                 }
             }
         }
@@ -360,21 +406,43 @@ namespace AdvancedRobotKinematics
         private void InitializeVariables()
         {
             AnimationTime = 4000;
-            LERPActivated = true;
-            SLERPActivated = false;
+            LERPActivated = false;
+            SLERPActivated = true;
             FramesCount = 30;
 
-            StartAngleR = 30;
-            StartAngleP = 0;
+            StartAngleR = 0;
+            StartAngleP = 60;
             StartAngleY = 0;
             StartPositionX = 5;
             StartPositionY = 0;
             StartPositionZ = 0;
 
-            EndAngleR = 0;
+            L1 = 5.0f;
+            L3 = 2.0f;
+            L4 = 1.0f;
+
+
+            //SPECIAL EMERGENCY START CASE
+            //StartAngleR = 0;
+            //StartAngleP = 0;
+            //StartAngleY = 0;
+            //StartPositionX = 1;
+            //StartPositionY = 2;
+            //StartPositionZ = 2;
+
+            //SPECIAL EMERGENCY START CASE
+            //StartAngleR = 0;
+            //StartAngleP = 0;
+            //StartAngleY = 0;
+            //StartPositionX = 1;
+            //StartPositionY = 0;
+            //StartPositionZ = 0;
+
+
+            EndAngleR = -90;
             EndAngleP = 0;
             EndAngleY = 0;
-            EndPositionX = 0;
+            EndPositionX = -5;
             EndPositionY = 0;
             EndPositionZ = 0;
 

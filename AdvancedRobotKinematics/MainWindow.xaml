@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AdvancedRobotKinematics"
         xmlns:h="http://helix-toolkit.org/wpf"
         mc:Ignorable="d"
-        Title="Advanced Robot Kinematics" Height="670" Width="1200"
+        Title="Advanced Robot Kinematics" Height="720" Width="1200"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -39,12 +39,30 @@
                         </StackPanel>
                     </Border>
                     <Border BorderBrush="Black" BorderThickness="1">
-                        <StackPanel Orientation="Horizontal">
-                            <StackPanel Orientation="Vertical">
-                                <Label Content="Frames Count" ></Label>
-                                <TextBox Name="FramesCountBox" Text="{Binding Path=FramesCount}" Width="50" Margin="20,0,20,10" HorizontalAlignment="Left"></TextBox>
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Vertical">
+                                    <Label Content="Frames Count" ></Label>
+                                    <TextBox Name="FramesCountBox" Text="{Binding Path=FramesCount}" Width="50" Margin="20,0,20,10" HorizontalAlignment="Left"></TextBox>
+                                </StackPanel>
+                                <CheckBox VerticalAlignment="Center" HorizontalAlignment="Center" Content="Display frames" IsChecked="{Binding Path=FramesDisplayed}" Unchecked="OnAllFramesHidden" Checked="OnAllFramesDisplayed" ></CheckBox>
                             </StackPanel>
-                            <CheckBox VerticalAlignment="Center" HorizontalAlignment="Center" Content="Display frames" IsChecked="{Binding Path=FramesDisplayed}" Unchecked="OnAllFramesHidden" Checked="OnAllFramesDisplayed" ></CheckBox>
+                        </StackPanel>
+                    </Border>
+                    <Border  BorderBrush="Black" BorderThickness="1">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Rod L1" ></Label>
+                                <TextBox Name="L1TextBox" Text="{Binding Path=L1}" Width="50" Margin="5" HorizontalAlignment="Left"  ></TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Rod L3" ></Label>
+                                <TextBox Name="L2TextBox" Text="{Binding Path=L3}" Width="50" Margin="5" HorizontalAlignment="Left" ></TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Rod L4" ></Label>
+                                <TextBox Name="L3TextBox" Text="{Binding Path=L4}" Width="50" Margin="5" HorizontalAlignment="Left" ></TextBox>
+                            </StackPanel>
                         </StackPanel>
                     </Border>
                     <Border BorderBrush="Black" BorderThickness="1">
@@ -60,11 +78,11 @@
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <Label Content="Y" ></Label>
-                                        <TextBox Name="StartPositionYBox" Text="{Binding Path=StartPositionZ}" Width="50" Margin="10,0,5,0" HorizontalAlignment="Left"></TextBox>
+                                        <TextBox Name="StartPositionYBox" Text="{Binding Path=StartPositionY}" Width="50" Margin="10,0,5,0" HorizontalAlignment="Left"></TextBox>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <Label Content="Z" ></Label>
-                                        <TextBox Name="StartPositionZBox" Text="{Binding Path=StartPositionY}" Width="50" Margin="10,0,5,0" HorizontalAlignment="Left"></TextBox>
+                                        <TextBox Name="StartPositionZBox" Text="{Binding Path=StartPositionZ}" Width="50" Margin="10,0,5,0" HorizontalAlignment="Left"></TextBox>
                                     </StackPanel>
                                 </StackPanel>
 
@@ -132,11 +150,11 @@
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <Label Content="Y" ></Label>
-                                        <TextBox Name="EndPositionYBox" Text="{Binding Path=EndPositionZ}" Width="50" Margin="10,0,5,0" HorizontalAlignment="Left"></TextBox>
+                                        <TextBox Name="EndPositionYBox" Text="{Binding Path=EndPositionY}" Width="50" Margin="10,0,5,0" HorizontalAlignment="Left"></TextBox>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <Label Content="Z" ></Label>
-                                        <TextBox Name="EndPositionZBox" Text="{Binding Path=EndPositionY}" Width="50" Margin="10,0,5,0" HorizontalAlignment="Left"></TextBox>
+                                        <TextBox Name="EndPositionZBox" Text="{Binding Path=EndPositionZ}" Width="50" Margin="10,0,5,0" HorizontalAlignment="Left"></TextBox>
                                     </StackPanel>
                                 </StackPanel>
 

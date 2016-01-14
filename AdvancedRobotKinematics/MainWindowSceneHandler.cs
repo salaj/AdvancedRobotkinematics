@@ -1,4 +1,5 @@
-﻿using System.Windows.Shapes;
+﻿using System.Windows.Controls;
+using System.Windows.Shapes;
 using AdvancedRobotKinematics.bases;
 using AdvancedRobotKinematics.interpolators;
 using HelixToolkit.Wpf;
@@ -268,8 +269,8 @@ namespace AdvancedRobotKinematics
             animationStarted = false;
             timeDelay = new TimeSpan();
 
-            HelixViewportLeft.Children.Remove(frameEuler);
-            HelixViewportRight.Children.Remove(frameQuaternion);
+            //HelixViewportLeft.Children.Remove(frameEuler);
+            //HelixViewportRight.Children.Remove(frameQuaternion);
 
             //HelixViewportLeft.Children.Add(FrameStartEulerManipulator);
             //HelixViewportLeft.Children.Add(FrameEndEulerManipulator);
@@ -320,6 +321,23 @@ namespace AdvancedRobotKinematics
             ExtractDataFromTransformationMatrices(startMat, endMat);
             //SetupStartConf();
             //SetupEndConf();
+        }
+
+
+        private void UpdateRods()
+        {
+            if (robotLeft == null || robotRight == null)
+                return;
+
+            robotLeft.components[1].Length = l1;
+            robotLeft.components[3].Length = l3;
+            robotLeft.components[4].Length = l4;
+
+            robotRight.components[1].Length = l1;
+            robotRight.components[3].Length = l3;
+            robotRight.components[4].Length = l4;
+
+            SetupStartConfiguration();
         }
 
 
