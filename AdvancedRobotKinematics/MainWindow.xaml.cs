@@ -82,7 +82,7 @@ namespace AdvancedRobotKinematics
         {
             dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 5);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 20);
         }
 
         private void SetupStartConfiguration()

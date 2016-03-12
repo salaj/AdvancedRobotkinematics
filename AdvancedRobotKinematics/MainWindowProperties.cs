@@ -439,12 +439,12 @@ namespace AdvancedRobotKinematics
             //StartPositionZ = 0;
 
 
-            EndAngleR = -90;
+            EndAngleR = 0;
             EndAngleP = 0;
             EndAngleY = 0;
-            EndPositionX = -5;
-            EndPositionY = 0;
-            EndPositionZ = 0;
+            EndPositionX = 4;
+            EndPositionY = 3;
+            EndPositionZ = 2;
 
             xDirection = new Vector3D(1, 0, 0);
             yDirection = new Vector3D(0, 1, 0);
